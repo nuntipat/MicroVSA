@@ -1,0 +1,101 @@
+#ifndef MODEL__H_
+#define MODEL__H_
+
+#include <stdint.h>
+#include "benchmark_config.h"
+
+#if MODEL_NAME == 0
+#define LDC_MODEL_FHV_DIMENSION_BIT 64
+#if LDC_IMPLEMENTATION_NUMBIT == 8
+#define LDC_MODEL_FHV_DIMENSION_WORD 8
+#elif LDC_IMPLEMENTATION_NUMBIT == 16
+#define LDC_MODEL_FHV_DIMENSION_WORD 4
+#elif LDC_IMPLEMENTATION_NUMBIT == 32
+#define LDC_MODEL_FHV_DIMENSION_WORD 2
+#else
+# error Unsupport look up configuration
+#endif
+#define LDC_MODEL_NUM_CLASS 2
+#define LDC_MODEL_NUM_FEATURE 187
+#elif MODEL_NAME == 1
+#define LDC_MODEL_FHV_DIMENSION_BIT 64
+#if LDC_IMPLEMENTATION_NUMBIT == 8
+#define LDC_MODEL_FHV_DIMENSION_WORD 8
+#elif LDC_IMPLEMENTATION_NUMBIT == 16
+#define LDC_MODEL_FHV_DIMENSION_WORD 4
+#elif LDC_IMPLEMENTATION_NUMBIT == 32
+#define LDC_MODEL_FHV_DIMENSION_WORD 2
+#else
+# error Unsupport look up configuration
+#endif
+#define LDC_MODEL_NUM_CLASS 6
+#define LDC_MODEL_NUM_FEATURE 561
+#elif MODEL_NAME == 2
+#define LDC_MODEL_FHV_DIMENSION_BIT 64
+#if LDC_IMPLEMENTATION_NUMBIT == 8
+#define LDC_MODEL_FHV_DIMENSION_WORD 8
+#elif LDC_IMPLEMENTATION_NUMBIT == 16
+#define LDC_MODEL_FHV_DIMENSION_WORD 4
+#elif LDC_IMPLEMENTATION_NUMBIT == 32
+#define LDC_MODEL_FHV_DIMENSION_WORD 2
+#else
+# error Unsupport look up configuration
+#endif
+#define LDC_MODEL_NUM_CLASS 2
+#define LDC_MODEL_NUM_FEATURE 810
+#elif MODEL_NAME == 3
+#define LDC_MODEL_FHV_DIMENSION_BIT 128
+#if LDC_IMPLEMENTATION_NUMBIT == 8
+#define LDC_MODEL_FHV_DIMENSION_WORD 16
+#elif LDC_IMPLEMENTATION_NUMBIT == 16
+#define LDC_MODEL_FHV_DIMENSION_WORD 8
+#elif LDC_IMPLEMENTATION_NUMBIT == 32
+#define LDC_MODEL_FHV_DIMENSION_WORD 4
+#else
+# error Unsupport look up configuration
+#endif
+#define LDC_MODEL_NUM_CLASS 10
+#define LDC_MODEL_NUM_FEATURE 800
+#endif
+
+#ifdef MODEL_F_IN_RAM
+#define MODEL_F_QUALIFIER
+#else
+#define MODEL_F_QUALIFIER const
+#endif
+#ifdef MODEL_V_IN_RAM
+#define MODEL_V_QUALIFIER
+#else
+#define MODEL_V_QUALIFIER const
+#endif
+#ifdef MODEL_C_IN_RAM
+#define MODEL_C_QUALIFIER
+#else
+#define MODEL_C_QUALIFIER const
+#endif
+
+#if LDC_IMPLEMENTATION_NUMBIT == 8
+extern MODEL_F_QUALIFIER uint8_t LDC_MODEL_F[];
+extern MODEL_V_QUALIFIER uint8_t LDC_MODEL_V[];
+extern MODEL_C_QUALIFIER uint8_t LDC_MODEL_C[];
+#elif LDC_IMPLEMENTATION_NUMBIT == 10
+extern MODEL_F_QUALIFIER uint16_t LDC_MODEL_F[];
+extern MODEL_V_QUALIFIER uint16_t LDC_MODEL_V[];
+extern MODEL_C_QUALIFIER uint16_t LDC_MODEL_C[];
+#elif LDC_IMPLEMENTATION_NUMBIT == 12
+extern MODEL_F_QUALIFIER uint16_t LDC_MODEL_F[];
+extern MODEL_V_QUALIFIER uint16_t LDC_MODEL_V[];
+extern MODEL_C_QUALIFIER uint16_t LDC_MODEL_C[];
+#elif LDC_IMPLEMENTATION_NUMBIT == 16
+extern MODEL_F_QUALIFIER uint16_t LDC_MODEL_F[];
+extern MODEL_V_QUALIFIER uint16_t LDC_MODEL_V[];
+extern MODEL_C_QUALIFIER uint16_t LDC_MODEL_C[];
+#elif LDC_IMPLEMENTATION_NUMBIT == 32
+extern MODEL_F_QUALIFIER uint32_t LDC_MODEL_F[];
+extern MODEL_V_QUALIFIER uint32_t LDC_MODEL_V[];
+extern MODEL_C_QUALIFIER uint32_t LDC_MODEL_C[];
+#else
+# error Unsupport look up configuration
+#endif
+
+#endif
