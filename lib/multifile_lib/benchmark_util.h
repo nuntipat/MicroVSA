@@ -1,10 +1,3 @@
-/* 
- * File:   benchmark_util.h
- * Author: nuntipat
- *
- * Created on March 20, 2023, 3:56 PM
- */
-
 #ifndef BENCHMARK_UTIL_H
 #define	BENCHMARK_UTIL_H
 

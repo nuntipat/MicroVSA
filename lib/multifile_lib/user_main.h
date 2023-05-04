@@ -1,10 +1,3 @@
-/* 
- * File:   user_main.h
- * Author: nuntipat
- *
- * Created on March 5, 2023, 11:58 AM
- */
-
 #ifndef USER_MAIN_H
 #define	USER_MAIN_H
 
