@@ -42,7 +42,7 @@ void uart_send_result(uint8_t result, TIMER_COUNTER_DTYPE runtime)
     HAL_UART_Transmit(&huart2, (uint8_t*) buffer, strlen(buffer), HAL_MAX_DELAY);
 }
 
-void uart_send_debug_p(LDC_MODEL_ACC_DTYPE arr[], uint8_t len)
+void uart_send_debug_p(MICROVSA_ACC_DTYPE arr[], uint8_t len)
 {
     uint8_t i;
     for (i=0; i<len; i++)
