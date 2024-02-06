@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm examples/ESP32/src/model.*
-rm examples/MSP430/src/model.*
+rm examples/MSP430_PIO/src/model.*
 rm examples/STM8/src/model.*
 rm examples/STM32L0_PIO/Src/model.*
 rm examples/STM32L0_PIO/Inc/model.*
