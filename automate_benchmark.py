@@ -140,7 +140,7 @@ def upload_and_benchmark(project_dir, config, sample, predict, raw_predict, args
 
     # run benchmark and measure runtime
     all_runtime = benchmark.run_benchmark(sample, predict, raw_predict, args)
-    avg_runtime = sum(all_runtime) / len(all_runtime)
+    avg_runtime = (sum(all_runtime) / len(all_runtime)) * args.timer_resolution
 
     return ram, flash, avg_runtime
 
