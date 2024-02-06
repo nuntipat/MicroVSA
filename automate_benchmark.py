@@ -104,6 +104,9 @@ mcu_opt_configs_16_32bit = {
                                '-DMICROVSA_IMPL=MICROVSA_IMPL_MCU_OPT_RRII -DMICROVSA_IMPL_OPTIMIZE_MEM -DMICROVSA_IMPL_POINTERIZE -DMICROVSA_IMPL_FIX_SIZE']
 }
 
+def list_pio_example_dirs():
+    return [p for p in os.listdir('examples') if not p.startswith('.') and os.path.exists(os.path.join('examples', p, 'platformio.ini'))]
+
 def assert_file_already_existed(paths):
     for p in paths:
         if os.path.exists(p):
@@ -169,6 +172,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     project_dir = f'examples/{args.mcu_dir}'
+    if not os.path.exists(project_dir):
+        print (f"Error: invalid directory. valid options are -i <{', '.join(list_pio_example_dirs())}>")
+        sys.exit(1)
+
     assert_file_already_existed([f'{project_dir}/{get_include_dir_name(project_dir)}/model.h', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c'])
 
     table = PrettyTable()
