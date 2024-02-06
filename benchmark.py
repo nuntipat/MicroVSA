@@ -4,7 +4,7 @@ import argparse
 import sys
 
 def run_benchmark(sample, predict, raw_predict, args):
-    with serial.Serial(args.serial_port, args.serial_baudrate) as ser:
+    with serial.Serial(args.serial_port, args.serial_baudrate, timeout=2) as ser:
         all_runtime = []
 
         # avoid cold start by performing inference once and discard result

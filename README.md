@@ -9,17 +9,6 @@ This repository contain an official implementation of MicroVSA, a low-dimensiona
 - `test_data/` contains test data for the benchmark script and for running self test on the board
 - `examples/` contains examples project for all MCU development boards mentioned in the paper
 
-<!-- ```
-lib/
-model/
-test_data/
-examples/
-    <MCU_ARCH_1>/
-        ...
-    <MCU_ARCH_2>/
-        ...
-``` -->
-
 ## Prerequisite
 
 The easiest way to test MicroVSA on the MCU development board is to use PlatformIO. However, example projects based on proprietary IDEs are also provided for some development boards. Please refer to the list of compatible IDEs for your board from the table below.
@@ -62,18 +51,39 @@ Setup Instructions
 
 ## Usage
 
-**Run benchmark automatically**
+### Run benchmark automatically
 
-An automatic benchmark script is provided to build, upload, perform benchmark of the vanilla LDC, binary LDC and MCU-optimized LDC on an MCU development. For instance, the following command perform benchmark using the pretrained model (PTB dataset, Df=64) on the ESP32-based development board.
+An automatic benchmark script is provided to build, upload, perform benchmark of the vanilla LDC, binary LDC and MCU-optimized LDC on an MCU development. For the expected runtime and flash and RAM utilization on all MCUs, please refer to Table 7-9 in our paper.
 
-    ```bash
-    # run `python automate_benchmark.py -h` to view all options
-    (venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m ptb -d 64 -c 2 -s /dev/ttyUSB0
-    ```
+```bash
+# Table 7/8
 
-Note: all implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automate benchmark script as these settings will be pass during compilation time by the benchmark script.
+# PTB Diagnostic ECG Database (Df=64) 
+(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m ptb -d 64 -c 2 -s /dev/ttyUSB0
 
-**Build with a specific model and LDC implementation**
+# Qualcomm Keyword Speech Dataset (Df=64) 
+(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m qksd -d 64 -c 2 -s /dev/ttyUSB0
+
+# UCI Human Activity Recognition (Df=64) 
+(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m har -d 64 -c 6 -s /dev/ttyUSB0
+
+# Free Spoken Digit Dataset (Df=128) 
+(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m fsdd -d 128 -c 10 -s /dev/ttyUSB0
+
+# Table 9
+
+# WIreless Sensor Data Mining (Df=64) 
+(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m wisdm -d 64 -c 4 -s /dev/ttyUSB0
+
+# ST multi-zone ToF sensors hand posture recognition (Df=128) 
+(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m sthand -d 128 -c 8 -s /dev/ttyUSB0
+
+# run `python automate_benchmark.py -h` to view all options
+```
+
+Note: all implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automate benchmark script if they have been set manually as these settings will be pass during compilation time by the automate benchmark script. 
+
+### Build with a specific model and LDC implementation
 
 1. Copy or create a symbolic link of the model file to the board directory. The following command is for the HAR model (Df=64) and the ESP32-based development board.
 

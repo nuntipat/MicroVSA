@@ -8,22 +8,6 @@ void main(void)
     CLK_HSIPrescalerConfig(CLK_PRESCALER_HSIDIV1);
 
     user_main();
-
-    // TIM3_DeInit();
-    // TIM3_TimeBaseInit(TIM3_PRESCALER_128, 65535);   // resolution = 8us
-    // TIM3_Cmd(ENABLE);
-
-    // UART3_DeInit();
-    // UART3_Init((uint32_t) 115200, UART3_WORDLENGTH_8D, UART3_STOPBITS_1, UART3_PARITY_NO, UART3_MODE_TXRX_ENABLE);
-    // UART3_Cmd(ENABLE);
-
-    // while (1)
-    // {
-    //   int c = getchar();
-    //     // TIM3_SetCounter(0);
-    //     // while(TIM3_GetCounter() <= (uint16_t) 62500);
-    //     printf("Receive: %c\n", c);
-    // }
 }
 
 #ifdef USE_FULL_ASSERT

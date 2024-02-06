@@ -1,1 +1,0 @@
-../../lib/test_data/model.c

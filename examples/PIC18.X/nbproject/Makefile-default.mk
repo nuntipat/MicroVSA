@@ -51,17 +51,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=mcc_generated_files/pin_manager.c mcc_generated_files/device_config.c mcc_generated_files/mcc.c mcc_generated_files/uart1.c mcc_generated_files/tmr0.c main.c benchmark_util.c ldc_inference.c model.c test_data.c user_main.c
+SOURCEFILES_QUOTED_IF_SPACED=mcc_generated_files/pin_manager.c mcc_generated_files/device_config.c mcc_generated_files/mcc.c mcc_generated_files/uart1.c mcc_generated_files/tmr0.c main.c benchmark_util.c microvsa.c user_main.c
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/device_config.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/uart1.p1 ${OBJECTDIR}/mcc_generated_files/tmr0.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/benchmark_util.p1 ${OBJECTDIR}/ldc_inference.p1 ${OBJECTDIR}/model.p1 ${OBJECTDIR}/test_data.p1 ${OBJECTDIR}/user_main.p1
-POSSIBLE_DEPFILES=${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d ${OBJECTDIR}/mcc_generated_files/device_config.p1.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d ${OBJECTDIR}/mcc_generated_files/uart1.p1.d ${OBJECTDIR}/mcc_generated_files/tmr0.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/benchmark_util.p1.d ${OBJECTDIR}/ldc_inference.p1.d ${OBJECTDIR}/model.p1.d ${OBJECTDIR}/test_data.p1.d ${OBJECTDIR}/user_main.p1.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/device_config.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/uart1.p1 ${OBJECTDIR}/mcc_generated_files/tmr0.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/benchmark_util.p1 ${OBJECTDIR}/microvsa.p1 ${OBJECTDIR}/user_main.p1
+POSSIBLE_DEPFILES=${OBJECTDIR}/mcc_generated_files/pin_manager.p1.d ${OBJECTDIR}/mcc_generated_files/device_config.p1.d ${OBJECTDIR}/mcc_generated_files/mcc.p1.d ${OBJECTDIR}/mcc_generated_files/uart1.p1.d ${OBJECTDIR}/mcc_generated_files/tmr0.p1.d ${OBJECTDIR}/main.p1.d ${OBJECTDIR}/benchmark_util.p1.d ${OBJECTDIR}/microvsa.p1.d ${OBJECTDIR}/user_main.p1.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/device_config.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/uart1.p1 ${OBJECTDIR}/mcc_generated_files/tmr0.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/benchmark_util.p1 ${OBJECTDIR}/ldc_inference.p1 ${OBJECTDIR}/model.p1 ${OBJECTDIR}/test_data.p1 ${OBJECTDIR}/user_main.p1
+OBJECTFILES=${OBJECTDIR}/mcc_generated_files/pin_manager.p1 ${OBJECTDIR}/mcc_generated_files/device_config.p1 ${OBJECTDIR}/mcc_generated_files/mcc.p1 ${OBJECTDIR}/mcc_generated_files/uart1.p1 ${OBJECTDIR}/mcc_generated_files/tmr0.p1 ${OBJECTDIR}/main.p1 ${OBJECTDIR}/benchmark_util.p1 ${OBJECTDIR}/microvsa.p1 ${OBJECTDIR}/user_main.p1
 
 # Source Files
-SOURCEFILES=mcc_generated_files/pin_manager.c mcc_generated_files/device_config.c mcc_generated_files/mcc.c mcc_generated_files/uart1.c mcc_generated_files/tmr0.c main.c benchmark_util.c ldc_inference.c model.c test_data.c user_main.c
+SOURCEFILES=mcc_generated_files/pin_manager.c mcc_generated_files/device_config.c mcc_generated_files/mcc.c mcc_generated_files/uart1.c mcc_generated_files/tmr0.c main.c benchmark_util.c microvsa.c user_main.c
 
 
 
@@ -144,29 +144,13 @@ ${OBJECTDIR}/benchmark_util.p1: benchmark_util.c  nbproject/Makefile-${CND_CONF}
 	@-${MV} ${OBJECTDIR}/benchmark_util.d ${OBJECTDIR}/benchmark_util.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/benchmark_util.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/ldc_inference.p1: ldc_inference.c  nbproject/Makefile-${CND_CONF}.mk 
+${OBJECTDIR}/microvsa.p1: microvsa.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ldc_inference.p1.d 
-	@${RM} ${OBJECTDIR}/ldc_inference.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/ldc_inference.p1 ldc_inference.c 
-	@-${MV} ${OBJECTDIR}/ldc_inference.d ${OBJECTDIR}/ldc_inference.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/ldc_inference.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/model.p1: model.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/model.p1.d 
-	@${RM} ${OBJECTDIR}/model.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/model.p1 model.c 
-	@-${MV} ${OBJECTDIR}/model.d ${OBJECTDIR}/model.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/model.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/test_data.p1: test_data.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/test_data.p1.d 
-	@${RM} ${OBJECTDIR}/test_data.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/test_data.p1 test_data.c 
-	@-${MV} ${OBJECTDIR}/test_data.d ${OBJECTDIR}/test_data.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/test_data.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/microvsa.p1.d 
+	@${RM} ${OBJECTDIR}/microvsa.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c  -D__DEBUG=1  -mdebugger=none   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/microvsa.p1 microvsa.c 
+	@-${MV} ${OBJECTDIR}/microvsa.d ${OBJECTDIR}/microvsa.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/microvsa.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/user_main.p1: user_main.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
@@ -233,29 +217,13 @@ ${OBJECTDIR}/benchmark_util.p1: benchmark_util.c  nbproject/Makefile-${CND_CONF}
 	@-${MV} ${OBJECTDIR}/benchmark_util.d ${OBJECTDIR}/benchmark_util.p1.d 
 	@${FIXDEPS} ${OBJECTDIR}/benchmark_util.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
-${OBJECTDIR}/ldc_inference.p1: ldc_inference.c  nbproject/Makefile-${CND_CONF}.mk 
+${OBJECTDIR}/microvsa.p1: microvsa.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/ldc_inference.p1.d 
-	@${RM} ${OBJECTDIR}/ldc_inference.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/ldc_inference.p1 ldc_inference.c 
-	@-${MV} ${OBJECTDIR}/ldc_inference.d ${OBJECTDIR}/ldc_inference.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/ldc_inference.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/model.p1: model.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/model.p1.d 
-	@${RM} ${OBJECTDIR}/model.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/model.p1 model.c 
-	@-${MV} ${OBJECTDIR}/model.d ${OBJECTDIR}/model.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/model.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
-	
-${OBJECTDIR}/test_data.p1: test_data.c  nbproject/Makefile-${CND_CONF}.mk 
-	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/test_data.p1.d 
-	@${RM} ${OBJECTDIR}/test_data.p1 
-	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/test_data.p1 test_data.c 
-	@-${MV} ${OBJECTDIR}/test_data.d ${OBJECTDIR}/test_data.p1.d 
-	@${FIXDEPS} ${OBJECTDIR}/test_data.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
+	@${RM} ${OBJECTDIR}/microvsa.p1.d 
+	@${RM} ${OBJECTDIR}/microvsa.p1 
+	${MP_CC} $(MP_EXTRA_CC_PRE) -mcpu=$(MP_PROCESSOR_OPTION) -c   -mdfp="${DFP_DIR}/xc8"  -fno-short-double -fno-short-float -memi=wordwrite -O3 -maddrqual=ignore -xassembler-with-cpp -mwarn=-3 -Wa,-a -DXPRJ_default=$(CND_CONF)  -msummary=-psect,-class,+mem,-hex,-file  -ginhx32 -Wl,--data-init -mno-keep-startup -mno-download -mdefault-config-bits $(COMPARISON_BUILD)  -std=c99 -gdwarf-3 -mstack=compiled:auto:auto:auto     -o ${OBJECTDIR}/microvsa.p1 microvsa.c 
+	@-${MV} ${OBJECTDIR}/microvsa.d ${OBJECTDIR}/microvsa.p1.d 
+	@${FIXDEPS} ${OBJECTDIR}/microvsa.p1.d $(SILENT) -rsi ${MP_CC_DIR}../  
 	
 ${OBJECTDIR}/user_main.p1: user_main.c  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 

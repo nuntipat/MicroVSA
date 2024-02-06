@@ -38,7 +38,7 @@ char buffer[32];
 
 void uart_send_result(uint8_t result, TIMER_COUNTER_DTYPE runtime)
 {
-    sprintf(buffer, "%d %dus\r\n", result, runtime * 2);
+    sprintf(buffer, "%d %dus\r\n", result, runtime * 2); // timer resolution is set to 2us to avoid overflow the 16-bit timer
     HAL_UART_Transmit(&huart2, (uint8_t*) buffer, strlen(buffer), HAL_MAX_DELAY);
 }
 

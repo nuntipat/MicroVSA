@@ -7,7 +7,12 @@ import numpy as np
 import time
 from prettytable import PrettyTable
 
-vanilla_ldc_configs = [
+vanilla_ldc_configs_8_16bit = [
+    '-DMICROVSA_IMPL=MICROVSA_IMPL_VANILLA_LDC -DMICROVSA_IMPL_USE_LUT -DMICROVSA_IMPL_LUTBIT=8',
+    '-DMICROVSA_IMPL=MICROVSA_IMPL_VANILLA_LDC -DMICROVSA_IMPL_FIX_SIZE -DMICROVSA_IMPL_USE_LUT -DMICROVSA_IMPL_LUTBIT=8'
+]
+
+vanilla_ldc_configs_32_bit = [
     '-DMICROVSA_IMPL=MICROVSA_IMPL_VANILLA_LDC',
     '-DMICROVSA_IMPL=MICROVSA_IMPL_VANILLA_LDC -DMICROVSA_IMPL_FIX_SIZE'
 ]
@@ -155,7 +160,7 @@ if __name__ == '__main__':
     parser.add_argument('-m', '--model', help="name of the model e.g. ptb, qksd, har, fsdd etc.")
     parser.add_argument('-d', '--df', type=int, help="dimension of the F, V, and C vector in bit (Df in the paper)")
     parser.add_argument('-c', '--num-class', type=int, help='number of class in the model')
-    parser.add_argument('-r', '--timer-resolution', type=float, default=1.0, help='unit of time return from the MCU timer (see benchmark_util.c). default to 1us.')
+    parser.add_argument('-r', '--timer-resolution', type=float, default=1.0, help='unit of time return from the MCU (see uart_send_result() in benchmark_util.c). default to 1us.')
     parser.add_argument('-s', '--serial-port', help='')
     parser.add_argument('-b', '--serial-baudrate', type=int, default=115200, help='')
     parser.add_argument('--platformio_path', default='pio', help="path to the platformio executable. default to 'pio'.")
@@ -182,9 +187,13 @@ if __name__ == '__main__':
     print ('Testing vanilla LDC...')
     os.symlink(f'../../../model/model_{args.model}_{args.df}sb.h', f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
     os.symlink(f'../../../model/model_{args.model}_{args.df}sb.c', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
+    if args.word_size == 8 or args.word_size == 16:
+        configs = vanilla_ldc_configs_8_16bit
+    else:
+        configs = vanilla_ldc_configs_32_bit
     results = []
-    for i, build_flag in enumerate(vanilla_ldc_configs):
-        print (f'    Configuration {i+1}/{len(vanilla_ldc_configs)}...')
+    for i, build_flag in enumerate(configs):
+        print (f'    Configuration {i+1}/{len(configs)}...')
         ram, flash, avg_runtime = upload_and_benchmark(project_dir, build_flag + common_build_flag, sample, predict, raw_predict, args)
         results.append([ram, flash, avg_runtime])
     best_result = min(results, key=lambda e: e[2])

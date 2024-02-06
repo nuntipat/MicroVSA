@@ -13,11 +13,9 @@
         <itemPath>mcc_generated_files/pin_manager.h</itemPath>
         <itemPath>mcc_generated_files/tmr0.h</itemPath>
       </logicalFolder>
-      <itemPath>benchmark_config.h</itemPath>
       <itemPath>benchmark_util.h</itemPath>
-      <itemPath>ldc_inference.h</itemPath>
-      <itemPath>model.h</itemPath>
-      <itemPath>test_data.h</itemPath>
+      <itemPath>microvsa.h</itemPath>
+      <itemPath>microvsa_config.h</itemPath>
       <itemPath>user_main.h</itemPath>
     </logicalFolder>
     <logicalFolder name="LinkerScript"
@@ -38,9 +36,7 @@
       </logicalFolder>
       <itemPath>main.c</itemPath>
       <itemPath>benchmark_util.c</itemPath>
-      <itemPath>ldc_inference.c</itemPath>
-      <itemPath>model.c</itemPath>
-      <itemPath>test_data.c</itemPath>
+      <itemPath>microvsa.c</itemPath>
       <itemPath>user_main.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
@@ -50,6 +46,9 @@
       <itemPath>PIC18.mc3</itemPath>
     </logicalFolder>
   </logicalFolder>
+  <sourceRootList>
+    <Elem>../AVR8.X</Elem>
+  </sourceRootList>
   <projectmakefile>Makefile</projectmakefile>
   <confs>
     <conf name="default" type="2">
