@@ -81,7 +81,9 @@ An automatic benchmark script is provided to build, upload, perform benchmark of
 # run `python automate_benchmark.py -h` to view all options
 ```
 
-Note: all implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automate benchmark script if they have been set manually as these settings will be pass during compilation time by the automate benchmark script. 
+Notes
+- For boards with limited flash memory, the option `--skip-vanilla` can be used to skip the vanilla LDC benchmark (see Table 7 in the paper).
+- All implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automate benchmark script if they have been set manually as these settings will be pass during compilation time by the automate benchmark script. 
 
 ### Build with a specific model and LDC implementation
 
