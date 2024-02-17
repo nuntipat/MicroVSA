@@ -1,17 +1,17 @@
 # MicroVSA
 
-This repository contain an official implementation of MicroVSA, a low-dimensional computing (LDC) classifier library for 8, 16, and 32-bit MCUs as well as several example projects demonstrating how to integrate and benchmark MicroVSA on MCU development boards. 
+This repository contains an official implementation of MicroVSA, a low-dimensional computing (LDC) classifier library for 8, 16, and 32-bit MCUs, as well as several example projects demonstrating how to integrate and benchmark MicroVSA on MCU development boards.
 
 ## Project Structure
 
-- `lib/` contains the classifier library which can be reused in other projects
+- `lib/` contains the classifier library, which can be reused in other projects
 - `model/` contains the pretrained model files for all datasets mentioned in the paper
-- `test_data/` contains test data for the benchmark script and for running self test on the board
-- `examples/` contains examples project for all MCU development boards mentioned in the paper
+- `test_data/` contains test data for the benchmark script and for running self-tests on the board
+- `examples/` contains example projects for all MCU development boards mentioned in the paper
 
 ## Prerequisite
 
-The easiest way to test MicroVSA on the MCU development board is to use PlatformIO. However, example projects based on proprietary IDEs are also provided for some development boards. Please refer to the list of compatible IDEs for your board from the table below.
+The easiest way to test MicroVSA on the MCU development board is to use PlatformIO. However, example projects based on proprietary IDEs are also provided for some development boards. Please refer to the list of compatible IDEs for your board in the table below.
 
 | Brand | MCU | Dev Board | IDE |
 |-------|-----|-----------|-----|
@@ -53,7 +53,7 @@ Setup Instructions
 
 ### Run benchmark automatically
 
-An automatic benchmark script is provided to build, upload, perform benchmark of the vanilla LDC, binary LDC and MCU-optimized LDC on an MCU development. For the expected runtime and flash and RAM utilization on all MCUs, please refer to Table 7-9 in our paper.
+An automatic benchmark script is provided to build, upload, and perform benchmarks of the vanilla LDC, binary LDC, and MCU-optimized LDC on MCU development boards. For the expected runtime and flash and RAM utilization on all MCUs, please refer to Tables 7-9 in our paper.
 
 ```bash
 # Table 7/8
@@ -83,7 +83,7 @@ An automatic benchmark script is provided to build, upload, perform benchmark of
 
 Notes
 - For boards with limited flash memory, the option `--skip-vanilla` can be used to skip the vanilla LDC benchmark (see Table 7 in the paper).
-- All implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automate benchmark script if they have been set manually as these settings will be pass during compilation time by the automate benchmark script. 
+- All implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automated benchmark script if they have been set manually, as these settings will be passed during compilation time by the automated benchmark script. 
 
 ### Build with a specific model and LDC implementation
 
@@ -147,7 +147,7 @@ Notes
 
 ## Citing
 
-If you are using MicroVSA in your academic work you can cite us:
+If you are using MicroVSA in your academic work, you can cite us:
 
 ```
 TBD
