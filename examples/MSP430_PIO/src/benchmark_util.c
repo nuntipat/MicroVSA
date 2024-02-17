@@ -55,7 +55,7 @@ void uart_write_string(char* s)
 
 void uart_send_result(uint8_t result, TIMER_COUNTER_DTYPE runtime)
 {
-    sprintf(buffer, "%d %uus\r\n", result, runtime * 8);    // timer resolution = 8us (8MHz / 64 = 125Khz)
+    sprintf(buffer, "%d %uus\r\n", result, runtime);    // timer resolution = 8us (8MHz / 64 = 125Khz)
     uart_write_string(buffer);
 }
 
