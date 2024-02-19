@@ -23,6 +23,7 @@ The easiest way to test MicroVSA on the MCU development board is to use Platform
 | STMicroelectronics | STM32L031K6 | NUCLEO-L031K6 | ST STM32CubeIDE / PlatformIO |
 | Microchip | PIC32MM0064GPL036 | PIC32MM Curiosity Development | Microchip MPLAB X |
 | STMicroelectronics | STM32L432KC | NUCLEO-L432KC | ST STM32CubeIDE / PlatformIO |
+| STMicroelectronics | STM32F412ZG | 32F412GDISCOVERY | ST STM32CubeIDE / PlatformIO |
 | STMicroelectronics | STM32H7A3ZI | NUCLEO-H7A3ZI-Q | ST STM32CubeIDE / PlatformIO |
 | Adafruit | ESP-WROOM-32 | ESP32 Feather Board | PlatformIO |
 
