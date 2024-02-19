@@ -267,7 +267,9 @@ if __name__ == '__main__':
                 for i, build_flag in enumerate(build_flags):
                     print (f'    Configuration {i+1}/{len(build_flags)}...')
                     ram, flash, avg_runtime = upload_and_benchmark(project_dir, build_flag + common_build_flag + extra_flag, sample, predict, raw_predict, args)
-                    results.append([ram, flash, avg_runtime])
+                    # On an 8-bit MCU, some configurations can take a very long runtime and overflow the printf function
+                    if avg_runtime > 0:
+                        results.append([ram, flash, avg_runtime])
                 best_result = min(results, key=lambda e: e[2])
                 table.add_row([full_name, best_result[0], best_result[1], best_result[2]])
         os.remove(f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
