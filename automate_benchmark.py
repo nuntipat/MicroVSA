@@ -168,7 +168,9 @@ if __name__ == '__main__':
     parser.add_argument('-b', '--serial-baudrate', type=int, default=115200, help='')
     parser.add_argument('--platformio_path', default='pio', help="path to the platformio executable. default to 'pio'.")
     parser.add_argument('-v', '--validate-p', action='store_true', help='')
-    parser.add_argument('-n', '--skip-vanilla', action='store_true', help='skip running benchmark on vanilla LDC (for board with limited flash)')
+    parser.add_argument('--skip-vanilla', action='store_true', help='skip running benchmark on vanilla LDC (for board with limited flash)')
+    parser.add_argument('--skip-binary', action='store_true', help='skip running benchmark on binary LDC classifier')
+    parser.add_argument('--skip-mcuopt', action='store_true', help='skip running benchmark on MCU-optimized LDC classifier')
     parser.add_argument('-t', '--num-test-sample', type=int, default=5, help='maximum value of the input')
     args = parser.parse_args()
 
@@ -186,13 +188,13 @@ if __name__ == '__main__':
     if args.validate_p:
         common_build_flag += ' -DMICROVSA_IMPL_DEBUG_P '
 
-    # load test data for vanilla and binary LDC
-    sample = np.load(f'test_data/{args.model}_{args.df}s_sample.npy')
-    predict = np.load(f'test_data/{args.model}_{args.df}s_predict.npy')
-    raw_predict = np.load(f'test_data/{args.model}_{args.df}s_raw_predict.npy')
-
-    # test vanilla LDC
     if not args.skip_vanilla:
+        # load test data for vanilla LDC
+        sample = np.load(f'test_data/{args.model}_{args.df}s_sample.npy')
+        predict = np.load(f'test_data/{args.model}_{args.df}s_predict.npy')
+        raw_predict = np.load(f'test_data/{args.model}_{args.df}s_raw_predict.npy')
+
+        # test vanilla LDC
         print ('Testing vanilla LDC...')
         os.symlink(f'../../../model/model_{args.model}_{args.df}sb.h', f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
         os.symlink(f'../../../model/model_{args.model}_{args.df}sb.c', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
@@ -210,58 +212,65 @@ if __name__ == '__main__':
         os.remove(f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
         os.remove(f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
 
-    # test binary LDC
-    print ('Testing binary LDC...')
-    os.symlink(f'../../../model/model_{args.model}_{args.df}s.h', f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
-    os.symlink(f'../../../model/model_{args.model}_{args.df}s.c', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
-    if args.word_size == 8:
-        configs = binary_ldc_configs_8_bit
-    elif args.word_size == 16:
-        configs = binary_ldc_configs_16_bit
-    else:
-        configs = binary_ldc_configs_32_bit
-    results = []
-    for i, build_flag in enumerate(configs):
-        print (f'    Configuration {i+1}/{len(configs)}...')
-        ram, flash, avg_runtime = upload_and_benchmark(project_dir, build_flag + common_build_flag, sample, predict, raw_predict, args)
-        results.append([ram, flash, avg_runtime])
-    best_result = min(results, key=lambda e: e[2])
-    table.add_row(['Binary LDC', best_result[0], best_result[1], best_result[2]])
-    os.remove(f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
-    os.remove(f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
+    if not args.skip_binary:  
+        # load test data for binary LDC
+        sample = np.load(f'test_data/{args.model}_{args.df}s_sample.npy')
+        predict = np.load(f'test_data/{args.model}_{args.df}s_predict.npy')
+        raw_predict = np.load(f'test_data/{args.model}_{args.df}s_raw_predict.npy')
 
-    # load test data for MCU-optimized LDC
-    sample = np.load(f'test_data/{args.model}_{args.df}_sample.npy')
-    predict = np.load(f'test_data/{args.model}_{args.df}_predict.npy')
-    raw_predict = np.load(f'test_data/{args.model}_{args.df}_raw_predict.npy')
+        # test binary LDC
+        print ('Testing binary LDC...')
+        os.symlink(f'../../../model/model_{args.model}_{args.df}s.h', f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
+        os.symlink(f'../../../model/model_{args.model}_{args.df}s.c', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
+        if args.word_size == 8:
+            configs = binary_ldc_configs_8_bit
+        elif args.word_size == 16:
+            configs = binary_ldc_configs_16_bit
+        else:
+            configs = binary_ldc_configs_32_bit
+        results = []
+        for i, build_flag in enumerate(configs):
+            print (f'    Configuration {i+1}/{len(configs)}...')
+            ram, flash, avg_runtime = upload_and_benchmark(project_dir, build_flag + common_build_flag, sample, predict, raw_predict, args)
+            results.append([ram, flash, avg_runtime])
+        best_result = min(results, key=lambda e: e[2])
+        table.add_row(['Binary LDC', best_result[0], best_result[1], best_result[2]])
+        os.remove(f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
+        os.remove(f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
 
-    # test MCU-optimized LDC
-    os.symlink(f'../../../model/model_{args.model}_{args.df}.h', f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
-    os.symlink(f'../../../model/model_{args.model}_{args.df}.c', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
-    if args.word_size == 8:
-        configs = mcu_opt_configs_8bit
-    else:
-        configs = mcu_opt_configs_16_32bit
-    for opt_name in ['LUT', 'Bit-fiddling']:
-        if opt_name == 'LUT': 
-            extra_flag = f' -DMICROVSA_IMPL_USE_LUT -DMICROVSA_IMPL_LUTBIT={8 if args.word_size != 32 else 11} '
-        elif opt_name == 'Bit-fiddling':
-            # only 32-bit MCU support bit-fiddling
-            if args.word_size != 32:
-                continue
-            extra_flag = ''
+    if not args.skip_mcuopt: 
+        # load test data for MCU-optimized LDC
+        sample = np.load(f'test_data/{args.model}_{args.df}_sample.npy')
+        predict = np.load(f'test_data/{args.model}_{args.df}_predict.npy')
+        raw_predict = np.load(f'test_data/{args.model}_{args.df}_raw_predict.npy')
 
-        for name, build_flags in configs.items():
-            full_name = f'{name} ({opt_name})'
-            print (f'Testing {full_name}...')
-            results = []
-            for i, build_flag in enumerate(build_flags):
-                print (f'    Configuration {i+1}/{len(build_flags)}...')
-                ram, flash, avg_runtime = upload_and_benchmark(project_dir, build_flag + common_build_flag + extra_flag, sample, predict, raw_predict, args)
-                results.append([ram, flash, avg_runtime])
-            best_result = min(results, key=lambda e: e[2])
-            table.add_row([full_name, best_result[0], best_result[1], best_result[2]])
-    os.remove(f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
-    os.remove(f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
+        # test MCU-optimized LDC
+        os.symlink(f'../../../model/model_{args.model}_{args.df}.h', f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
+        os.symlink(f'../../../model/model_{args.model}_{args.df}.c', f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
+        if args.word_size == 8:
+            configs = mcu_opt_configs_8bit
+        else:
+            configs = mcu_opt_configs_16_32bit
+        for opt_name in ['LUT', 'Bit-fiddling']:
+            if opt_name == 'LUT': 
+                extra_flag = f' -DMICROVSA_IMPL_USE_LUT -DMICROVSA_IMPL_LUTBIT={8 if args.word_size != 32 else 11} '
+            elif opt_name == 'Bit-fiddling':
+                # only 32-bit MCU support bit-fiddling
+                if args.word_size != 32:
+                    continue
+                extra_flag = ''
+
+            for name, build_flags in configs.items():
+                full_name = f'{name} ({opt_name})'
+                print (f'Testing {full_name}...')
+                results = []
+                for i, build_flag in enumerate(build_flags):
+                    print (f'    Configuration {i+1}/{len(build_flags)}...')
+                    ram, flash, avg_runtime = upload_and_benchmark(project_dir, build_flag + common_build_flag + extra_flag, sample, predict, raw_predict, args)
+                    results.append([ram, flash, avg_runtime])
+                best_result = min(results, key=lambda e: e[2])
+                table.add_row([full_name, best_result[0], best_result[1], best_result[2]])
+        os.remove(f'{project_dir}/{get_include_dir_name(project_dir)}/model.h')
+        os.remove(f'{project_dir}/{get_source_dir_name(project_dir)}/model.c')
 
     print (table)
