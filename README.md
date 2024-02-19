@@ -83,6 +83,7 @@ An automatic benchmark script is provided to build, upload, and perform benchmar
 
 Notes
 - For boards with limited flash memory, the option `--skip-vanilla` can be used to skip the vanilla LDC benchmark (see Table 7 in the paper).
+- The timer resolution needs to be set via the option `-r X` to match the `uart_send_result()` function in `benchmark_util.h`, e.g., `-r 32` for `STM8_PIO` or `-r 8` for `MSP430_PIO`.
 - All implementation settings (`MODEL_TRANSPOSE_*` and `MICROVSA_IMPL_*`) in `microvsa_config.h` must be commented before running the automated benchmark script if they have been set manually, as these settings will be passed during compilation time by the automated benchmark script. 
 
 ### Build with a specific model and LDC implementation

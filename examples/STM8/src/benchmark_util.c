@@ -9,7 +9,7 @@
 void timer_initialize()
 {
     TIM3_DeInit();
-    TIM3_TimeBaseInit(TIM3_PRESCALER_256, 65535);   // resolution = 16us
+    TIM3_TimeBaseInit(TIM3_PRESCALER_512, 65535);   // resolution = 32us
     TIM3_Cmd(ENABLE);
 }
 
@@ -26,7 +26,7 @@ TIMER_COUNTER_DTYPE timer_elapsed_cycle()
 void delay_10000us()
 {
     timer_reset();
-    while (timer_elapsed_cycle() < 625);
+    while (timer_elapsed_cycle() < 312);    // 312.5
 }
 
 void uart_initialize()
@@ -38,7 +38,7 @@ void uart_initialize()
 
 void uart_send_result(uint8_t result, TIMER_COUNTER_DTYPE runtime)
 {
-    printf("%d %dus\n", result, (int) runtime); // timer resolution = 16us (16MHz / 256)
+    printf("%d %dus\n", result, (int) runtime); // timer resolution = 32us (16MHz / 512)
 }
 
 void uart_send_debug_p(MICROVSA_ACC_DTYPE arr[], uint8_t len)
