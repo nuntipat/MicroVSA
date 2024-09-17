@@ -147,10 +147,25 @@ Notes
                         -s /dev/ttyUSB0
     ```
 
-## Citing
+## Citation
 
-If you are using MicroVSA in your academic work, you can cite us:
+If you find the project helpful, please consider citing our paper:
 
 ```
-TBD
+@inproceedings{10.1145/3620665.3640374,
+author = {Narkthong, Nuntipat and Duan, Shijin and Ren, Shaolei and Xu, Xiaolin},
+title = {MicroVSA: An Ultra-Lightweight Vector Symbolic Architecture-based Classifier Library for Always-On Inference on Tiny Microcontrollers},
+year = {2024},
+isbn = {9798400703850},
+publisher = {Association for Computing Machinery},
+address = {New York, NY, USA},
+url = {https://doi.org/10.1145/3620665.3640374},
+doi = {10.1145/3620665.3640374},
+booktitle = {Proceedings of the 29th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2},
+pages = {730–745},
+numpages = {16},
+keywords = {vector symbolic architecture, microcontroller, machine learning},
+location = {La Jolla, CA, USA},
+series = {ASPLOS '24}
+}
 ```
