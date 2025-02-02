@@ -9,8 +9,8 @@
 
 /* Uncomment the following line to transpose the F and/or C vectors, depending on the MicroVSA implementation chosen. 
  * See the list of support configuration below for more information */
-// # define MODEL_TRANSPOSE_F
-// # define MODEL_TRANSPOSE_C
+// #define MODEL_TRANSPOSE_F
+// #define MODEL_TRANSPOSE_C
 
 /* Uncomment the following line to store the F, C, and/or V vectors in RAM instead of flash */
 // #define MODEL_F_IN_RAM
@@ -34,6 +34,17 @@
 #define MICROVSA_MAX_NUM_CLASS 2            // maximum number of class in the model
 #define MICROVSA_MAX_FHV_DIM 2              // maximum value of Df in word e.g. if Df=64 and MICROVSA_IMPL_WORDSIZE=32, set this value to 2
 #define MICROVSA_MAX_FHV_DIM_BIT 64         // set to MICROVSA_MAX_FHV_DIM * MICROVSA_IMPL_WORDSIZE
+#define MICROVSA_MAX_NUM_FEATURE 561
+
+// #define MICROVSA_FUNC_IN_RAM             // move inference function from FRAM to RAM (only applicable to MSP430 MCUs)
+
+// #define MICROVSA_ENABLE_INTERMITTENT
+
+#define MICROVSA_CHECKPOINT_VFC 0
+#define MICROVSA_CHECKPOINT_VF  1
+#define MICROVSA_CHECKPOINT_V   2
+
+#define MICROVSA_CHECKPOINT_MODE MICROVSA_CHECKPOINT_VFC
 
 /********************************
  * List of support configuration
@@ -88,7 +99,10 @@
 
 // #define USE_DUMMY_DATA
 // #define MICROVSA_BENCHMARK_TEST_RUN
+// #define MICROVSA_MEASURE_RUNTIME           // measure and report runtime using the built-in timer
 #define TIMER_COUNTER_DTYPE uint32_t
+// #define MICROVSA_ENABLE_TRIGGER            // assert a GPIO pin during each inference (the pulse width will correspond to inference time)
+// #define MICROVSA_ENABLE_BUTTON             // wait for button press after finish each inference
 
 #endif
 

@@ -168,6 +168,13 @@ MICROVSA_LUT_DTYPE lookup(MICROVSA_TMP_DTYPE v) {
 #endif
 }
 
+#ifndef MICROVSA_ENABLE_INTERMITTENT
+
+#ifdef MICROVSA_FUNC_IN_RAM
+#ifdef __MSP430FR5994__
+#pragma CODE_SECTION(microvsa_run_single_inference,".TI.ramfunc")
+#endif
+#endif
 uint8_t microvsa_run_single_inference(const uint8_t in[], const uint16_t in_length
 #ifndef MICROVSA_IMPL_FIX_SIZE
 							, const MICROVSA_MODEL_DTYPE* __restrict__ f, const MICROVSA_MODEL_DTYPE* __restrict__ v, const MICROVSA_MODEL_DTYPE* __restrict__ c
@@ -669,6 +676,347 @@ uint8_t microvsa_run_single_inference(const uint8_t in[], const uint16_t in_leng
 #endif
 	return argmax(p, num_class);
 }
+
+#else // #ifndef MICROVSA_ENABLE_INTERMITTENT
+
+#define RESTORE_I i = state1.fram_i;
+#define RESTORE_J j = state1.fram_j;
+#define RESTORE_K k = state1.fram_k;
+#define RESTORE_P for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++) { p[l] = state1.fram_p[l]; }
+
+#ifdef MICROVSA_FUNC_IN_RAM
+#ifdef __MSP430FR5994__
+#pragma CODE_SECTION(microvsa_run_intermittent_inference_compute,".TI.ramfunc")
+#endif
+#endif
+void microvsa_run_intermittent_inference_compute(const uint8_t in[], const uint16_t in_length
+#ifndef MICROVSA_IMPL_FIX_SIZE
+                            , const MICROVSA_MODEL_DTYPE* __restrict__ f, const MICROVSA_MODEL_DTYPE* __restrict__ v, const MICROVSA_MODEL_DTYPE* __restrict__ c
+                            , uint8_t num_class, uint16_t num_feature, uint8_t fhv_dim_word, uint8_t fhv_dim_bit
+#endif
+                            ) {
+    uint16_t i;
+    uint8_t j;
+    uint8_t k;
+    uint8_t l;
+    MICROVSA_ACC_DTYPE p[MICROVSA_MAX_NUM_CLASS];
+
+#if MICROVSA_IMPL == MICROVSA_IMPL_MCU_OPT_CR && !defined(MICROVSA_IMPL_OPTIMIZE_MEM) && MICROVSA_CHECKPOINT_MODE == MICROVSA_CHECKPOINT_VF
+    RESTORE_J;
+    RESTORE_I;
+    RESTORE_P;
+    while (i<num_feature)
+    {
+        const MICROVSA_TMP_DTYPE v_val = v[in[i]];
+        while (j<fhv_dim_word)
+        {
+            const MICROVSA_TMP_DTYPE vf = v_val ^ f[i * fhv_dim_word + j];
+            for (k=0; k<num_class; k++)
+            {
+                const MICROVSA_TMP_DTYPE vfc = vf ^ c[k * fhv_dim_word + j];
+                const MICROVSA_LUT_DTYPE tmp = lookup(vfc);
+                p[k] += tmp;
+            }
+
+            state1.fram_j++;
+            for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+            {
+                state1.fram_p[l] = p[l];
+            }
+            state1.counter++;
+
+            state2.fram_j++;
+            for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+            {
+                state2.fram_p[l] = p[l];
+            }
+            state2.counter++;
+
+            j++;
+        }
+        state1.fram_i++;
+        state1.fram_j = 0;
+        state1.counter++;
+
+        state2.fram_i++;
+        state2.fram_j = 0;
+        state2.counter++;
+
+        j = 0;
+        i++;
+    }
+#elif MICROVSA_IMPL == MICROVSA_IMPL_MCU_OPT_CR && defined(MICROVSA_IMPL_OPTIMIZE_MEM) && MICROVSA_CHECKPOINT_MODE == MICROVSA_CHECKPOINT_VF
+    #define NEED_MODEL_TRANSPOSE_C
+    RESTORE_J;
+    RESTORE_I;
+    RESTORE_P;
+    f += (i * fhv_dim_word) + j;
+    const MICROVSA_TMP_DTYPE* __restrict__ c_ptr = c + (j * num_class);
+    while (i<num_feature)
+    {
+        const MICROVSA_TMP_DTYPE v_val = v[in[i]];
+        while (j<fhv_dim_word)
+        {
+            const MICROVSA_TMP_DTYPE vf = v_val ^ *f++;
+            for (k=0; k<num_class; k++)
+            {
+                const MICROVSA_TMP_DTYPE vfc = vf ^ *c_ptr++;
+//                const MICROVSA_TMP_DTYPE vfc = vf ^ c[j * num_class + k];
+                const MICROVSA_LUT_DTYPE tmp = lookup(vfc);
+                p[k] += tmp;
+            }
+
+            state1.fram_j++;
+            for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+            {
+                state1.fram_p[l] = p[l];
+            }
+            state1.counter++;
+
+            state2.fram_j++;
+            for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+            {
+                state2.fram_p[l] = p[l];
+            }
+            state2.counter++;
+
+            j++;
+        }
+        state1.fram_i++;
+        state1.fram_j = 0;
+        state1.counter++;
+
+        state2.fram_i++;
+        state2.fram_j = 0;
+        state2.counter++;
+
+        j = 0;
+        i++;
+        c_ptr = c;
+    }
+#elif MICROVSA_IMPL == MICROVSA_IMPL_MCU_OPT_CR && defined(MICROVSA_IMPL_OPTIMIZE_MEM) && MICROVSA_CHECKPOINT_MODE == MICROVSA_CHECKPOINT_V
+    #define NEED_MODEL_TRANSPOSE_C
+    RESTORE_I;
+    RESTORE_P;
+    f += i * fhv_dim_word;
+    while (i<num_feature)
+    {
+        const MICROVSA_TMP_DTYPE v_val = v[in[i]];
+        const MICROVSA_TMP_DTYPE* __restrict__ c_ptr = c;
+        for (j=0; j<fhv_dim_word; j++)
+        {
+            const MICROVSA_TMP_DTYPE vf = v_val ^ *f++;
+            for (k=0; k<num_class; k++)
+            {
+                const MICROVSA_TMP_DTYPE vfc = vf ^ *c_ptr++;
+                const MICROVSA_LUT_DTYPE tmp = lookup(vfc);
+                p[k] += tmp;
+            }
+        }
+
+        state1.fram_i++;
+        for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+        {
+            state1.fram_p[l] = p[l];
+        }
+        state1.counter++;
+
+        state2.fram_i++;
+        for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+        {
+            state2.fram_p[l] = p[l];
+        }
+        state2.counter++;
+
+        i++;
+    }
+#elif MICROVSA_IMPL == MICROVSA_IMPL_MCU_OPT_CC && MICROVSA_CHECKPOINT_MODE == MICROVSA_CHECKPOINT_VFC
+    #define NEED_MODEL_TRANSPOSE_C
+    #define NEED_MODEL_TRANSPOSE_F
+    RESTORE_K;
+    RESTORE_J;
+    RESTORE_I;
+    RESTORE_P;
+    f += j * num_feature + i;
+    c += num_class * j;
+    while (j<fhv_dim_word)
+    {
+        while (i<num_feature)
+        {
+            MICROVSA_TMP_DTYPE vf = v[in[i]] ^ *f++;
+            while (k<num_class)
+            {
+                MICROVSA_TMP_DTYPE vfc = vf ^ c[k];
+                MICROVSA_LUT_DTYPE tmp = lookup(vfc);
+
+                state1.fram_p[k] += tmp;
+                state1.fram_k++;
+                state1.counter++;
+
+                state2.fram_p[k] += tmp;
+                state2.fram_k++;
+                state2.counter++;
+
+                k++;
+            }
+
+            state1.fram_k = 0;
+            state1.fram_i++;
+            state1.counter++;
+
+            state2.fram_k = 0;
+            state2.fram_i++;
+            state2.counter++;
+
+            k=0;
+            i++;
+        }
+
+        state1.fram_i = 0;
+        state1.fram_j++;
+        state1.counter++;
+
+        state2.fram_i = 0;
+        state2.fram_j++;
+        state2.counter++;
+
+        i=0;
+        j++;
+        c += num_class;
+    }
+#elif MICROVSA_IMPL == MICROVSA_IMPL_MCU_OPT_CC && MICROVSA_CHECKPOINT_MODE == MICROVSA_CHECKPOINT_VF
+    #define NEED_MODEL_TRANSPOSE_C
+    #define NEED_MODEL_TRANSPOSE_F
+    RESTORE_J;
+    RESTORE_I;
+    RESTORE_P;
+    f += j * num_feature + i;
+    c += num_class * j;
+    while (j<fhv_dim_word)
+    {
+        while (i<num_feature)
+        {
+            MICROVSA_TMP_DTYPE vf = v[in[i]] ^ *f++;
+            for (k=0; k<num_class; k++)
+            {
+                MICROVSA_TMP_DTYPE vfc = vf ^ c[k];
+                p[k] += lookup(vfc);
+            }
+
+            state1.fram_i++;
+            for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+            {
+                state1.fram_p[l] = p[l];
+            }
+            state1.counter++;
+
+            state2.fram_i++;
+            for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+            {
+                state2.fram_p[l] = p[l];
+            }
+            state2.counter++;
+
+            i++;
+        }
+
+        state1.fram_i = 0;
+        state1.fram_j++;
+        state1.counter++;
+
+        state2.fram_i = 0;
+        state2.fram_j++;
+        state2.counter++;
+
+        i=0;
+        j++;
+        c += num_class;
+    }
+#elif MICROVSA_IMPL == MICROVSA_IMPL_MCU_OPT_CC && MICROVSA_CHECKPOINT_MODE == MICROVSA_CHECKPOINT_V
+    #define NEED_MODEL_TRANSPOSE_C
+    #define NEED_MODEL_TRANSPOSE_F
+    RESTORE_J;
+    RESTORE_P;
+    f += j * num_feature;
+    c += num_class * j;
+    while (j<fhv_dim_word)
+    {
+        for (i=0; i<num_feature; i++)
+        {
+            MICROVSA_TMP_DTYPE vf = v[in[i]] ^ *f++;
+            for (k=0; k<num_class; k++)
+            {
+                MICROVSA_TMP_DTYPE vfc = vf ^ c[k];
+                p[k] += lookup(vfc);
+            }
+        }
+
+        state1.fram_j++;
+        for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+        {
+            state1.fram_p[l] = p[l];
+        }
+        state1.counter++;
+
+        state2.fram_j++;
+        for (l=0; l<MICROVSA_MAX_NUM_CLASS; l++)
+        {
+            state2.fram_p[l] = p[l];
+        }
+        state2.counter++;
+
+        j++;
+        c += num_class;
+    }
+#else
+#error LDC Implementation not found!!! Please check the value of MICROVSA_IMPL.
+#endif
+
+    microvsa_current_state = MICROVSA_STATE_INFERENCE_ARGMAX;
+}
+
+//#ifdef MICROVSA_FUNC_IN_RAM
+//#ifdef __MSP430FR5994__
+//#pragma CODE_SECTION(microvsa_run_intermittent_inference,".TI.ramfunc")
+//#endif
+//#endif
+uint8_t microvsa_run_intermittent_inference(const uint8_t in[], const uint16_t in_length
+#ifndef MICROVSA_IMPL_FIX_SIZE
+                            , const MICROVSA_MODEL_DTYPE* __restrict__ f, const MICROVSA_MODEL_DTYPE* __restrict__ v, const MICROVSA_MODEL_DTYPE* __restrict__ c
+                            , uint8_t num_class, uint16_t num_feature, uint8_t fhv_dim_word, uint8_t fhv_dim_bit
+#endif
+                            )
+{
+    uint16_t i;
+    uint8_t result;
+
+    if (microvsa_current_state == MICROVSA_STATE_INFERENCE_INIT) {
+        state1.fram_i = 0;
+        state1.fram_j = 0;
+        state1.counter = 0;
+
+        state2.fram_i = 0;
+        state2.fram_j = 0;
+        state2.counter = 0;
+
+        for (i=0; i<MICROVSA_MAX_NUM_CLASS; i++) {
+            state1.fram_p[i] = 0;
+            state2.fram_p[i] = 0;
+        }
+        microvsa_current_state = MICROVSA_STATE_INFERENCE_COMPUTE_P;
+    }
+
+    if (microvsa_current_state == MICROVSA_STATE_INFERENCE_COMPUTE_P) {
+        microvsa_run_intermittent_inference_compute(in, in_length, f, v, c, num_class, num_feature, fhv_dim_word, fhv_dim_bit);
+    }
+
+    if (microvsa_current_state == MICROVSA_STATE_INFERENCE_ARGMAX) {
+        result = argmax(state1.fram_p, num_class);
+    }
+    return result;
+}
+
+#endif // #ifndef MICROVSA_ENABLE_INTERMITTENT
 
 #if defined(NEED_MODEL_TRANSPOSE_C) && !defined(MODEL_TRANSPOSE_C)
 	#error The C vector of the LDC model need to be transpose

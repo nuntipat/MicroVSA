@@ -3,6 +3,7 @@
 
 #include <stdint.h>
 #include "microvsa_config.h"
+#include "microvsa_state.h"
 
 #if defined(MICROVSA_IMPL_UNROLL) && !defined(MICROVSA_IMPL_FIX_SIZE)
 #define MICROVSA_IMPL_FIX_SIZE
@@ -14,6 +15,7 @@
 #define MICROVSA_MODEL_DTYPE MICROVSA_TMP_DTYPE
 #endif
 
+#ifndef MICROVSA_ENABLE_INTERMITTENT
 uint8_t microvsa_run_single_inference(const uint8_t in[], const uint16_t in_length
 #ifndef MICROVSA_IMPL_FIX_SIZE
 		, const MICROVSA_MODEL_DTYPE* __restrict__ f, const MICROVSA_MODEL_DTYPE* __restrict__ v, const MICROVSA_MODEL_DTYPE* __restrict__ c
@@ -23,5 +25,13 @@ uint8_t microvsa_run_single_inference(const uint8_t in[], const uint16_t in_leng
         , MICROVSA_ACC_DTYPE* debugP
 #endif
 );
+#else
+uint8_t microvsa_run_intermittent_inference(const uint8_t in[], const uint16_t in_length
+#ifndef MICROVSA_IMPL_FIX_SIZE
+        , const MICROVSA_MODEL_DTYPE* __restrict__ f, const MICROVSA_MODEL_DTYPE* __restrict__ v, const MICROVSA_MODEL_DTYPE* __restrict__ c
+        , uint8_t num_class, uint16_t num_feature, uint8_t fhv_dim_word, uint8_t fhv_dim_bit
+#endif
+);
+#endif
 
 #endif /* INC_LDC_INFERENCE_H_ */
