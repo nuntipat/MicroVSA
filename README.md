@@ -1,6 +1,6 @@
 # MicroVSA
 
-This repository contains an official implementation of MicroVSA, a low-dimensional computing (LDC) classifier library for 8, 16, and 32-bit MCUs, as well as several example projects demonstrating how to integrate and benchmark MicroVSA on MCU development boards.
+This repository contains an official implementation of MicroVSA, a low-dimensional computing (LDC) classifier library for 8, 16, and 32-bit MCUs, as well as several example projects demonstrating how to integrate and benchmark MicroVSA on MCU development boards. To train your own LDC models, please refer to our training code at [link](https://github.com/nuntipat/MicroVSA-Training).
 
 ## Project Structure
 
