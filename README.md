@@ -1,6 +1,6 @@
 # MIVSA
 
-This repository provides the official implementation for the paper "MIVSA: An Ultra-Lightweight Classifier Enabling Intelligence Battery-less Energy Harvesting Embedded Systems". It extends the [MicroVSA](https://github.com/nuntipat/MicroVSA) to support intermittent inference on 16- and 32-bit MCUs.
+This repository provides the official implementation for the paper "MIVSA: An Ultra-Lightweight Classifier Enabling Intelligence Battery-less Energy Harvesting Embedded Systems". It extends the [MicroVSA](https://github.com/nuntipat/MicroVSA) library to support intermittent inference on 16- and 32-bit MCUs.
 
 ## Project Structure
 
@@ -15,17 +15,17 @@ The easiest way to test MIVSA on the MCU development board is to use PlatformIO.
 
 | Brand | MCU | Dev Board | IDE |
 |-------|-----|-----------|-----|
-| Microchip | ATtiny3217 | ATtiny3217 Curiosity Nano | Microchip MPLAB X |
-| Microchip | PIC18F16Q40 | PIC18F16Q40 Curiosity Nano | Microchip MPLAB X |
-| STMicroelectronics | STM8S207K8 | NUCLEO-8S207K8 | PlatformIO |
+<!-- | Microchip | ATtiny3217 | ATtiny3217 Curiosity Nano | Microchip MPLAB X |
+| Microchip | PIC18F16Q40 | PIC18F16Q40 Curiosity Nano | Microchip MPLAB X | -->
+<!-- | STMicroelectronics | STM8S207K8 | NUCLEO-8S207K8 | PlatformIO | -->
 | Texas Instruments | MSP430FR5994 | MSP-EXP430FR5994 | TI CCS Cloud / PlatformIO |
-| Microchip | PIC24FJ64GU205 | PIC24FJ64GU205 Curiosity Development | Microchip MPLAB X |
+<!-- | Microchip | PIC24FJ64GU205 | PIC24FJ64GU205 Curiosity Development | Microchip MPLAB X |
 | STMicroelectronics | STM32L031K6 | NUCLEO-L031K6 | ST STM32CubeIDE / PlatformIO |
-| Microchip | PIC32MM0064GPL036 | PIC32MM Curiosity Development | Microchip MPLAB X |
+| Microchip | PIC32MM0064GPL036 | PIC32MM Curiosity Development | Microchip MPLAB X | -->
 | STMicroelectronics | STM32L432KC | NUCLEO-L432KC | ST STM32CubeIDE / PlatformIO |
 | STMicroelectronics | STM32F412ZG | 32F412GDISCOVERY | ST STM32CubeIDE / PlatformIO |
 | STMicroelectronics | STM32H7A3ZI | NUCLEO-H7A3ZI-Q | ST STM32CubeIDE / PlatformIO |
-| Adafruit | ESP-WROOM-32 | ESP32 Feather Board | PlatformIO |
+<!-- | Adafruit | ESP-WROOM-32 | ESP32 Feather Board | PlatformIO | -->
 
 For running the benchmark script
 
