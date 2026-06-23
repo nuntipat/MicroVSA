@@ -1,6 +1,6 @@
-# MicroVSA
+# MIVSA
 
-This repository contains an official implementation of MicroVSA, a low-dimensional computing (LDC) classifier library for 8, 16, and 32-bit MCUs, as well as several example projects demonstrating how to integrate and benchmark MicroVSA on MCU development boards.
+This repository provides the official implementation for the paper "MIVSA: An Ultra-Lightweight Classifier Enabling Intelligence Battery-less Energy Harvesting Embedded Systems". It extends the [MicroVSA](https://github.com/nuntipat/MicroVSA) to support intermittent inference on 16- and 32-bit MCUs.
 
 ## Project Structure
 
@@ -11,7 +11,7 @@ This repository contains an official implementation of MicroVSA, a low-dimension
 
 ## Prerequisite
 
-The easiest way to test MicroVSA on the MCU development board is to use PlatformIO. However, example projects based on proprietary IDEs are also provided for some development boards. Please refer to the list of compatible IDEs for your board in the table below.
+The easiest way to test MIVSA on the MCU development board is to use PlatformIO. However, example projects based on proprietary IDEs are also provided for some development boards. Please refer to the list of compatible IDEs for your board in the table below.
 
 | Brand | MCU | Dev Board | IDE |
 |-------|-----|-----------|-----|
@@ -40,14 +40,14 @@ Setup Instructions
 1. (Optional) Create a Python virtual environment
 
     ```
-    MicroVSA $ virtualenv -p python3 venv
-    MicroVSA $ source venv/bin/activate
+    MIVSA $ virtualenv -p python3 venv
+    MIVSA $ source venv/bin/activate
     ```
 
 2. Setup all dependencies
 
     ```
-    (venv) MicroVSA $ ./setup.sh
+    (venv) MIVSA $ ./setup.sh
     ```
 
 ## Usage
@@ -60,24 +60,24 @@ An automatic benchmark script is provided to build, upload, and perform benchmar
 # Table 7/8
 
 # PTB Diagnostic ECG Database (Df=64) 
-(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m ptb -d 64 -c 2 -s /dev/ttyUSB0
+(venv) MIVSA $ python automate_benchmark.py -i ESP32 -w 32 -m ptb -d 64 -c 2 -s /dev/ttyUSB0
 
 # Qualcomm Keyword Speech Dataset (Df=64) 
-(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m qksd -d 64 -c 2 -s /dev/ttyUSB0
+(venv) MIVSA $ python automate_benchmark.py -i ESP32 -w 32 -m qksd -d 64 -c 2 -s /dev/ttyUSB0
 
 # UCI Human Activity Recognition (Df=64) 
-(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m har -d 64 -c 6 -s /dev/ttyUSB0
+(venv) MIVSA $ python automate_benchmark.py -i ESP32 -w 32 -m har -d 64 -c 6 -s /dev/ttyUSB0
 
 # Free Spoken Digit Dataset (Df=128) 
-(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m fsdd -d 128 -c 10 -s /dev/ttyUSB0
+(venv) MIVSA $ python automate_benchmark.py -i ESP32 -w 32 -m fsdd -d 128 -c 10 -s /dev/ttyUSB0
 
 # Table 9
 
 # WIreless Sensor Data Mining (Df=64) 
-(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m wisdm -d 64 -c 4 -s /dev/ttyUSB0
+(venv) MIVSA $ python automate_benchmark.py -i ESP32 -w 32 -m wisdm -d 64 -c 4 -s /dev/ttyUSB0
 
 # ST multi-zone ToF sensors hand posture recognition (Df=128) 
-(venv) MicroVSA $ python automate_benchmark.py -i ESP32 -w 32 -m sthand -d 128 -c 8 -s /dev/ttyUSB0
+(venv) MIVSA $ python automate_benchmark.py -i ESP32 -w 32 -m sthand -d 128 -c 8 -s /dev/ttyUSB0
 
 # run `python automate_benchmark.py -h` to view all options
 ```
@@ -92,7 +92,7 @@ Notes
 1. Copy or create a symbolic link of the model file to the board directory. The following command is for the HAR model (Df=64) and the ESP32-based development board.
 
     ```bash
-    (venv) MicroVSA $ cd examples/ESP32/src
+    (venv) MIVS $ cd examples/ESP32/src
     (venv) src $ ln -s ../../../model/model_har_64.h model.h
     (venv) src $ ln -s ../../../model/model_har_64.c model.c
     ```
@@ -141,7 +141,7 @@ Notes
     ```bash
     (venv) ESP32 $ cd ../../
     # run `python benchmark.py -h` to view all options
-    (venv) MicroVSA $ python benchmark.py \
+    (venv) MIVSA $ python benchmark.py \
                         -i test_data/har_d64 \
                         -c 6 -t 10 \
                         -s /dev/ttyUSB0
@@ -149,23 +149,4 @@ Notes
 
 ## Citation
 
-If you find the project helpful, please consider citing our paper:
-
-```
-@inproceedings{10.1145/3620665.3640374,
-author = {Narkthong, Nuntipat and Duan, Shijin and Ren, Shaolei and Xu, Xiaolin},
-title = {MicroVSA: An Ultra-Lightweight Vector Symbolic Architecture-based Classifier Library for Always-On Inference on Tiny Microcontrollers},
-year = {2024},
-isbn = {9798400703850},
-publisher = {Association for Computing Machinery},
-address = {New York, NY, USA},
-url = {https://doi.org/10.1145/3620665.3640374},
-doi = {10.1145/3620665.3640374},
-booktitle = {Proceedings of the 29th ACM International Conference on Architectural Support for Programming Languages and Operating Systems, Volume 2},
-pages = {730–745},
-numpages = {16},
-keywords = {vector symbolic architecture, microcontroller, machine learning},
-location = {La Jolla, CA, USA},
-series = {ASPLOS '24}
-}
-```
+TBD
